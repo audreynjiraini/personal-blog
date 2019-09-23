@@ -2,9 +2,7 @@ from flask import Flask, render_template, redirect, url_for, flash
 from .forms import BlogForm, CommentForm
 from flask_sqlalchemy import SQLAlchemy
 from flask import Blueprint
-# from app import app
-
-main = Blueprint('main', __name__)
+from . import main
 
 
 posts = [

@@ -1,11 +1,11 @@
 from flask import Flask
-from config import config_options
 from flask_bootstrap import Bootstrap
 from flask_login import LoginManager
-from flask_sqlalchemy import SQLAlchemy
 from flask_mail import Mail
-from flask_uploads import UploadSet
 from flask_simplemde import SimpleMDE
+from flask_sqlalchemy import SQLAlchemy
+from flask_uploads import UploadSet
+from config import config_options
 
 
 login_manager = LoginManager()

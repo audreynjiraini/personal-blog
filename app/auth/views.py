@@ -2,8 +2,8 @@ from flask import Flask, render_template, redirect, url_for, flash
 from .forms import RegistrationForm, LoginForm
 from flask_sqlalchemy import SQLAlchemy
 from flask import Blueprint
+from . import auth
 
-auth = Blueprint('auth', __name__)
 
 @auth.route('/register', methods=['GET', 'POST'])
 def register():
