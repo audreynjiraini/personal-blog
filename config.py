@@ -2,7 +2,7 @@ import os
 
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY')
-    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://audrey:12345@localhost/personal-blog'
+    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://audrey:12345@localhost/personalblog'
     SQLALCHEMY_TRACK_MODIFICATIONS  = False
     
     # simple mde configurations
@@ -11,7 +11,7 @@ class Config:
 
     # Email Configurations
     MAIL_SERVER = 'smtp.gmail.com'
-    MAIL_PORT = 587
+    MAIL_PORT = 4056
     MAIL_USE_TLS = True
     MAIL_USERNAME = os.environ.get('audreywncode.gmail.com')
     MAIL_PASSWORD = os.environ.get('C0de2019$')
@@ -22,14 +22,14 @@ class Config:
         pass
 
 class TestConfig(Config):
-    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://audrey:12345@localhost/personal-blog_test'
+    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://audrey:12345@localhost/personalblog_test'
 
 class ProdConfig(Config):
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
     
 
 class DevConfig(Config):
-    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://audrey:12345@localhost/personal-blog'
+    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://audrey:12345@localhost/personalblog'
     DEBUG = True
 
 config_options = {

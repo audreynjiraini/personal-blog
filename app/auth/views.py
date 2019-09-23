@@ -1,9 +1,11 @@
 from flask import Flask, render_template, redirect, url_for, flash
-from forms import RegistrationForm, LoginForm
+from .forms import RegistrationForm, LoginForm
 from flask_sqlalchemy import SQLAlchemy
+from flask import Blueprint
 
+auth = Blueprint('auth', __name__)
 
-@app.route('/register', methods=['GET', 'POST'])
+@auth.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():
@@ -14,7 +16,7 @@ def register():
     return render_template('register.html', title = 'Register', form = form)
 
 
-@app.route('/login', methods=['GET', 'POST'])
+@auth.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
     if form.validate_on_submit():

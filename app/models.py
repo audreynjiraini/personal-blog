@@ -10,6 +10,8 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 class User(db.Model):
+    __tablename__ = 'users'
+    
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
@@ -43,7 +45,7 @@ class User(db.Model):
  
  
 class Blog(db.Model):
-    __tablename__ = 'blog'
+    __tablename__ = 'blogs'
     
     id = db.Column(db.Integer, primary_key = True)
     title = db.Column(db.String(255))
@@ -102,7 +104,7 @@ class Comment(db.Model):
     comment = db.Column(db.String)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     posted = db.Column(db.DateTime, default = datetime.utcnow)  
-    blog = db.Column(db.Integer, db.ForeignKey('blog.id'))
+    blog = db.Column(db.Integer, db.ForeignKey('blogs.id'))
     
     
     def save_comment(self):

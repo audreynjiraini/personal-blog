@@ -1,6 +1,10 @@
 from flask import Flask, render_template, redirect, url_for, flash
-from forms import RegistrationForm, LoginForm
+from .forms import BlogForm, CommentForm
 from flask_sqlalchemy import SQLAlchemy
+from flask import Blueprint
+# from app import app
+
+main = Blueprint('main', __name__)
 
 
 posts = [
@@ -20,13 +24,13 @@ posts = [
 
 
 
-@app.route('/')
-@app.route('/home')
+@main.route('/')
+@main.route('/home')
 def home():
     return render_template('home.html', posts = posts)
 
 
-@app.route('/about')
+@main.route('/about')
 def about():
     return render_template('about.html', title = 'About')
 
