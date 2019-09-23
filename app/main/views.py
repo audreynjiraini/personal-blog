@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for, flash, abort
+from flask import Flask, render_template, redirect, url_for, flash, abort, request
 from .forms import BlogForm, CommentForm
 from flask_sqlalchemy import SQLAlchemy
 from flask import Blueprint
@@ -33,7 +33,7 @@ def home():
         
     title = "Welcome to My Blog"
 
-    return render_template('index.html', posts = blogs)
+    return render_template('index.html', blogs = blogs)
 
 
 @main.route('/user/<uname>')
@@ -49,21 +49,20 @@ def profile():
 
 @main.route('/new_blog', methods=['GET','POST'])
 @login_required
-def new_post():
+def new_blog():
     form = BlogForm()
     if form.validate_on_submit():
         title = form.title.data
-        content = form.content.data
-        category = form.category.data
-        new_post=Post(title=title,content=content,category=category)
+        body = form.body.data
+        new_blog = Blog(title = title,body = body)
 
-        new_post.save_post()
+        new_blog.save_blog()
 
     title="Make a blog post"
     return render_template('new_blog.html',title=title,blog_form=form)
 
 
-@main.route("/post/<int:id>",methods=['GET','POST'])
+@main.route("/blog/<int:id>",methods=['GET','POST'])
 def blog(id):
     blog = Blog.query.get_or_404(id)
     comment = Comment.query.all()
@@ -85,4 +84,4 @@ def blog(id):
 
         return redirect("/blog/{blog_id}".format(blog_id = blog.id))
 
-    return render_template('post.html',blog = blog,comments = comment,comment_form = form)
+    return render_template('blog.html',blog = blog,comments = comment,comment_form = form)
