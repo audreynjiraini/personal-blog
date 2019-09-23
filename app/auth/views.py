@@ -13,7 +13,7 @@ def register():
         
         return redirect(url_for('main.home'))
     
-    return render_template('register.html', title = 'Register', form = form)
+    return render_template('auth/register.html', title = 'Register', registration_form = form)
 
 
 @auth.route('/login', methods=['GET', 'POST'])
@@ -28,7 +28,7 @@ def login():
         else:
             flash('Login Unsuccessful. Please check username and password', 'danger')
     
-    return render_template('login.html', title = 'Login', form = form)
+    return render_template('auth/login.html', title = 'Login', login_form = form)
 
 
 
