@@ -12,13 +12,15 @@ def load_user(user_id):
 class User(db.Model):
     __tablename__ = 'users'
     
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(20), unique=True, nullable=False)
-    email = db.Column(db.String(120), unique=True, nullable=False)
-    image_file = db.Column(db.String(20), nullable=False, default='default.jpeg')
-    password = db.Column(db.String(60), nullable=False)
-    comments = db.relationship('Comment', backref = 'comments', lazy = 'dynamic')
-    blogs = db.relationship('Blog', backref = 'blogs', lazy = 'dynamic')
+    id = db.Column(db.Integer, primary_key = True)
+    username = db.Column(db.String(20), unique = True, nullable = False)
+    email = db.Column(db.String(120), unique = True, nullable = False)
+    # image_file = db.Column(db.String(20), nullable=False, default='default.jpeg')
+    password_hash = db.Column(db.String(60), nullable = False)
+    
+    role_id = db.Column(db.Integer,db.ForeignKey('roles.id'))
+    # comments = db.relationship('Comment', backref = 'comments', lazy = 'dynamic')
+    # blogs = db.relationship('Blog', backref = 'blogs', lazy = 'dynamic')
     
     
     @property
@@ -28,11 +30,11 @@ class User(db.Model):
     
     @password.setter
     def password(self, password):
-        self.pass_secure = generate_password_hash(password)
+        self.password_hash = generate_password_hash(password)
 
 
     def verify_password(self, password):
-        return check_password_hash(self.pass_secure, password)
+        return check_password_hash(self.password_hash, password)
 
 
     def save_user(self):
@@ -50,15 +52,16 @@ class Blog(db.Model):
     __tablename__ = 'blogs'
     
     id = db.Column(db.Integer, primary_key = True)
+    post_id = db.Column(db.Integer)
     title = db.Column(db.String(255))
     body = db.Column(db.String)
-    posted = db.Column(db.DateTime,default=datetime.utcnow)
+    posted = db.Column(db.DateTime,default = datetime.utcnow)
     category = db.Column(db.String)
     likes = db.Column(db.Integer)
     dislikes = db.Column(db.Integer)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    # user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     
-    comments = db.relationship('Comments', backref='comments1', lazy='dynamic')
+    # comments = db.relationship('Comments', backref='comments1', lazy='dynamic')
 
 
     def save_blog(self):
@@ -67,31 +70,31 @@ class Blog(db.Model):
 
 
     @classmethod
-    def get_blogs(cls, category):
-        blogs = Blog.query.filter_by(category = category).all()
+    def get_blogs(cls, id):
+        blogs = Blog.query.filter_by(post_id = id).all()
         return blogs
     
     
-    def get_blog(cls, id):
-        blog = Blog.query.filter_by(id = id).first()
-        return blog
+    # def get_blog(cls, id):
+    #     blog = Blog.query.filter_by(id = id).first()
+    #     return blog
     
     
-    @classmethod
-    def count_blogs(cls, uname):
-        user = User.query.filter_by(username = uname). first()
-        blogs = Blog.query.filter_by(user_id = user.id).all()
+    # @classmethod
+    # def count_blogs(cls, uname):
+    #     user = User.query.filter_by(username = uname). first()
+    #     blogs = Blog.query.filter_by(user_id = user.id).all()
         
-        blogs_count = 0
-        for blog in blogs:
-            blogs_count += 1
+    #     blogs_count = 0
+    #     for blog in blogs:
+    #         blogs_count += 1
             
-        return blogs_count
+    #     return blogs_count
     
-    def get_comments(self):
-        blog = Blog.query.filter_by(id = self.id).first()
-        comments = Comments.query.filter_by(blog = blog.id)
-        return comments
+    # def get_comments(self):
+    #     blog = Blog.query.filter_by(id = self.id).first()
+    #     comments = Comments.query.filter_by(blog = blog.id)
+    #     return comments
     
     
     def __repr__(self):
@@ -104,21 +107,50 @@ class Comment(db.Model):
 
     id = db.Column(db.Integer, primary_key = True)
     comment = db.Column(db.String)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    posted = db.Column(db.DateTime, default = datetime.utcnow)  
-    blog = db.Column(db.Integer, db.ForeignKey('blogs.id'))
+    posted = db.Column(db.DateTime, default = datetime.utcnow) 
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id')) 
+    blog_id = db.Column(db.Integer, db.ForeignKey('blogs.id'))
     
     
     def save_comment(self):
         db.session.add(self)
         db.session.commit()
+        
+        
+    def delete_comment(self):
+        db.session.delete(self)
+        db.session.commit()
 
 
-    @classmethod
-    def get_comments(cls, blog):
-        comments = Comments.query.filter_by(blog_id = blog).all()
-        return comments
+    # @classmethod
+    # def get_comments(cls, blog):
+    #     comments = Comments.query.filter_by(blog_id = blog).all()
+    #     return comments
 
 
     def __repr__(self):
         return f'Comment: {self.comment}'
+    
+    
+    
+class Role(db.Model):
+    __tablename__ = 'roles'
+
+    id = db.Column(db.Integer,primary_key = True)
+    name = db.Column(db.String(255))
+    users= db.relationship('User',backref = 'role',lazy="dynamic")
+
+    def __repr__(self):
+        return f'User{self.name}'
+    
+    
+    
+class Subscriber(db.Model):
+    __tablename__='subscribers'
+
+    id = db.Column(db.Integer,primary_key = True)
+    email = db.Column(db.String(255),unique = True,index = True)
+
+    def save_subscriber(self):
+        db.session.add(self)
+        db.session.commit()
