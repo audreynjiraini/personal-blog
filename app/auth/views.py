@@ -3,22 +3,6 @@ from forms import RegistrationForm, LoginForm
 from flask_sqlalchemy import SQLAlchemy
 
 
-posts = [
-    {
-        'author': 'Audrey Njiraini',
-        'title': 'Blog Post 1',
-        'content': 'First post content',
-        'date_posted': 'September 21, 2019'
-    },
-    {
-        'author': 'Kendall Njiraini',
-        'title': 'Blog Post 2',
-        'content': 'Second post content',
-        'date_posted': 'September 22, 2019'
-    }
-]
-
-
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()
