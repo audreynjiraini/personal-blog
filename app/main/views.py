@@ -3,7 +3,7 @@ from .forms import BlogForm, CommentForm
 from flask_sqlalchemy import SQLAlchemy
 from flask import Blueprint
 from . import main
-from ..models import User, Blog, Comment, Role, Subscriber
+from ..models import User, Blog, Comment, Subscriber
 from flask_login import login_required, current_user
 from ..email import mail_message
 

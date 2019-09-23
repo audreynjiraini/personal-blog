@@ -9,16 +9,16 @@ from . import login_manager
 def load_user(user_id):
     return User.query.get(int(user_id))
 
-class User(db.Model):
+class User(UserMixin,db.Model):
     __tablename__ = 'users'
     
     id = db.Column(db.Integer, primary_key = True)
-    username = db.Column(db.String(20), unique = True, nullable = False)
-    email = db.Column(db.String(120), unique = True, nullable = False)
+    username = db.Column(db.String(255), unique = True, nullable = False)
+    email = db.Column(db.String(255), unique = True, nullable = False)
     # image_file = db.Column(db.String(20), nullable=False, default='default.jpeg')
-    password_hash = db.Column(db.String(60), nullable = False)
+    password_hash = db.Column(db.String(255), nullable = False)
     
-    role_id = db.Column(db.Integer,db.ForeignKey('roles.id'))
+    # role_id = db.Column(db.Integer,db.ForeignKey('roles.id'))
     # comments = db.relationship('Comment', backref = 'comments', lazy = 'dynamic')
     # blogs = db.relationship('Blog', backref = 'blogs', lazy = 'dynamic')
     
@@ -133,15 +133,15 @@ class Comment(db.Model):
     
     
     
-class Role(db.Model):
-    __tablename__ = 'roles'
+# class Role(db.Model):
+#     __tablename__ = 'roles'
 
-    id = db.Column(db.Integer,primary_key = True)
-    name = db.Column(db.String(255))
-    users= db.relationship('User',backref = 'role',lazy="dynamic")
+#     id = db.Column(db.Integer,primary_key = True)
+#     name = db.Column(db.String(255))
+#     users= db.relationship('User',backref = 'role',lazy="dynamic")
 
-    def __repr__(self):
-        return f'User{self.name}'
+#     def __repr__(self):
+#         return f'User{self.name}'
     
     
     
