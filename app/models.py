@@ -17,6 +17,8 @@ class User(db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     image_file = db.Column(db.String(20), nullable=False, default='default.jpeg')
     password = db.Column(db.String(60), nullable=False)
+    comments = db.relationship('Comment', backref = 'comments', lazy = 'dynamic')
+    blogs = db.relationship('Blog', backref = 'blogs', lazy = 'dynamic')
     
     
     @property
