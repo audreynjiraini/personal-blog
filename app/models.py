@@ -9,17 +9,12 @@ from . import login_manager
 def load_user(user_id):
     return User.query.get(int(user_id))
 
-class User(UserMixin,db.Model):
-    __tablename__ = 'users'
-    
-    id = db.Column(db.Integer, primary_key = True)
-    first_name = db.Column(db.String(255))
-    last_name = db.Column(db.String(255))
-    username = db.Column(db.String(255), index = True)
-    email = db.Column(db.String(255), unique = True, index = True)
-    pass_secure = db.Column(db.String(255))
-    comments = db.relationship('Comments', backref = 'comments', lazy = 'dynamic')
-    blog = db.relationship('Blog', backref = 'blogs', lazy = 'dynamic')
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(20), unique=True, nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    image_file = db.Column(db.String(20), nullable=False, default='default.jpeg')
+    password = db.Column(db.String(60), nullable=False)
     
     
     @property
@@ -41,8 +36,8 @@ class User(UserMixin,db.Model):
         db.session.commit()
 
 
-    def __repr__(self):
-        return f'User: {self.username}'
+    def  __repr__(self):
+        return f'User("{self.username}", "{self.email}", "{self.image_file}")'
     
     
  
