@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, TextAreaField, SubmitField, IntegerField, SelectField, ValidationError
-from wtforms.validators import Required, Email
-from ..models import User
+from wtforms.validators import Required, Email, EqualTo
+from ..models import User, Subscriber
 
 
 class BlogForm(FlaskForm):
@@ -15,4 +15,9 @@ class BlogForm(FlaskForm):
 class CommentForm(FlaskForm):
     
     comment = StringField('Your comment:', validators=[Required()])
+    submit = SubmitField('Submit')
+    
+    
+class UpdateProfile(FlaskForm):
+    bio = TextAreaField('Tell us about you.',validators = [Required()])
     submit = SubmitField('Submit')

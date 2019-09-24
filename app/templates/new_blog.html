@@ -11,12 +11,12 @@
 {% block content %}
 <br><br><br>
 
-<div id="postform">
+<div id="blogform">
     <div class="panel col-md-12">
-      <div class="panel-body">
-        {{wtf.quick_form(blog_form)}}
-        {{simplemde.load}}
-      </div>
+        <div class="panel-body">
+            {{wtf.quick_form(blog_form)}}
+            {{simplemde.load}}
+        </div>
     </div>
-  </div>
-  {% endblock %}
+</div>
+{% endblock %}

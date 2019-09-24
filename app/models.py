@@ -15,8 +15,8 @@ class User(UserMixin,db.Model):
     id = db.Column(db.Integer, primary_key = True)
     username = db.Column(db.String(255), unique = True, nullable = False)
     email = db.Column(db.String(255), unique = True, nullable = False)
-    # image_file = db.Column(db.String(20), nullable=False, default='default.jpeg')
     password_hash = db.Column(db.String(255), nullable = False)
+    profile_pic_path = db.Column(db.String())
     
     # role_id = db.Column(db.Integer,db.ForeignKey('roles.id'))
     # comments = db.relationship('Comment', backref = 'comments', lazy = 'dynamic')
@@ -75,28 +75,6 @@ class Blog(db.Model):
         return blogs
     
     
-    # def get_blog(cls, id):
-    #     blog = Blog.query.filter_by(id = id).first()
-    #     return blog
-    
-    
-    # @classmethod
-    # def count_blogs(cls, uname):
-    #     user = User.query.filter_by(username = uname). first()
-    #     blogs = Blog.query.filter_by(user_id = user.id).all()
-        
-    #     blogs_count = 0
-    #     for blog in blogs:
-    #         blogs_count += 1
-            
-    #     return blogs_count
-    
-    # def get_comments(self):
-    #     blog = Blog.query.filter_by(id = self.id).first()
-    #     comments = Comments.query.filter_by(blog = blog.id)
-    #     return comments
-    
-    
     def __repr__(self):
         return f'Blog: {self.body}'
 
@@ -122,26 +100,8 @@ class Comment(db.Model):
         db.session.commit()
 
 
-    # @classmethod
-    # def get_comments(cls, blog):
-    #     comments = Comments.query.filter_by(blog_id = blog).all()
-    #     return comments
-
-
     def __repr__(self):
         return f'Comment: {self.comment}'
-    
-    
-    
-# class Role(db.Model):
-#     __tablename__ = 'roles'
-
-#     id = db.Column(db.Integer,primary_key = True)
-#     name = db.Column(db.String(255))
-#     users= db.relationship('User',backref = 'role',lazy="dynamic")
-
-#     def __repr__(self):
-#         return f'User{self.name}'
     
     
     

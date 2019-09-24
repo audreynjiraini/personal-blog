@@ -7,7 +7,7 @@ from . import auth
 from ..models import User
 from .. import db
 from ..email import mail_message
-
+from wtforms import StringField, PasswordField, BooleanField, SubmitField
 
 @auth.route('/register', methods=['GET', 'POST'])
 def register():
@@ -45,4 +45,6 @@ def login():
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for("main.index"))
+    flash('You have been successfully logged out')
+    
+    return redirect(url_for("main.home"))

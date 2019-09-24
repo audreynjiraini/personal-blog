@@ -1,18 +1,29 @@
 {% extends 'base.html' %} 
+{% import "bootstrap/wtf.html" as wtf %}
+
 
 
 {% block content %} 
+
+    <div class="container">
+        <div class="jumbotron text-center">
+            <p>{{ quote.quote }}</p>
+            <p>{{ quote.author }}</p>
+        </div>
+    </div>
+
+
     {% for blog in blogs %}
         <article class="media content-section">
             <div class="media-body">
                 <div class="article-metadata">
-                    <a class="mr-2" href="#">{{ blog.author }}</a>
-                    <small class="text-muted">{{ blog.date_posted }}</small>
+                    <p class="mr-2">{{ blog.author }}</p>
+                    <small class="text-muted">{{ blog.posted }}</small>
                 </div>
                 <h2 class="article-title">{{ blog.title }}</a> </h2>
                 <p class="article-content">{{ blog.body | truncate(25) }}</p>
                 <div class="text-center">
-                    <a href="/blog/{{blog.id}}">Click To Read / Comment...</a>
+                    <a href="/blog/{{blog.id}}">Read More...</a>
                 </div>
             </div>
         </article>

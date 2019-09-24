@@ -10,53 +10,53 @@
 
 
 {% block content %}
-<br><br><br>
+<div class="row">
+        <div class="col-lg-9"> 
+            <br><br><br>
 
-<div class="col-md-8">
+            <div class="container">
+                <h2>{{blog.title}}</h2>
+                <hr>
+                <h4>Posted on: {{blog.posted}}</h4>
+                <br>
+                <p>{{blog.body}}</p>         
+            </div>
 
-    <div class="panel">
-        <div class="panel-body">
-            <div class="col-md-10">
-                <div class="text-center">
-                    <h1>{{blog.title}}</h1>
-                    <h4>{{blog.posted.date()}}/ <a href="#">{{blog.category}}</a></h4>
+            <br><br><br>
+        </div>
+    
+        <div class="col-lg-3 mt-5 pt-4"> 
+            <div class="container">
+            
+                <div id="commentheader">
+                    <h3>Comments</h3>
+                    <hr>
+                </div>
+                
+
+                <div>
+                    {% for comment in comments %}
+                    <p>{{comment.comment}}</p>
+
+                    {% if current_user.is_authenticated %}
+                    <div>
+                        <a href="/blog/{{blog.id}}?delete=1">Delete Comment</i></a>
+                    </div>
+                    {% endif %}
+                    {% endfor%}
                 </div>
 
-                <p>{{blog.body}}</p>
-
             </div>
 
-        </div>
-    </div>
-</div>
-
-<div class="col-md-4">
-
-
-    <div class="panel panel-body" id="commentheader">
-        <h1 class="text-center">Comments</h1>
-    </div>
-    <br><br>
-    <div class="panel">
-        <div class="panel-body responsive">
-            {% for comment in comments %}
-            <p>{{comment.comment}}</p>
-            <div class="col-md-6">
-                <a href="/blog/{{blog.id}}?delete=1">Delete Comment</i></a>
+            <div class="row">
+                <div id="commentform">
+                    <h3>Leave a Comment</h3>
+                    {{wtf.quick_form(comment_form)}}
+                    {{simplemde.load}}
+                </div>
             </div>
         </div>
-        {% endfor%}
-    </div>
-</div>
-</div>
 
-
-<div id="commentform" class="panel col-md-12">
-    <div class="panel-body">
-        <h1>Leave a Comment</h1>
-        {{wtf.quick_form(comment_form)}}
-        {{simplemde.load}}
-    </div>
 </div>
 
 

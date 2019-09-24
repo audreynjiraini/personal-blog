@@ -1,27 +1,30 @@
 from flask import Flask, render_template, redirect, url_for, flash, abort, request
-from .forms import BlogForm, CommentForm
+from .forms import BlogForm, CommentForm, UpdateProfile
 from flask_sqlalchemy import SQLAlchemy
 from flask import Blueprint
 from . import main
 from ..models import User, Blog, Comment, Subscriber
 from flask_login import login_required, current_user
 from ..email import mail_message
+from ..request import get_quote
+from .. import db, photos
+import markdown2
 
 
-posts = [
-    {
-        'author': 'Audrey Njiraini',
-        'title': 'Blog Post 1',
-        'content': 'First post content',
-        'date_posted': 'September 21, 2019'
-    },
-    {
-        'author': 'Kendall Njiraini',
-        'title': 'Blog Post 2',
-        'content': 'Second post content',
-        'date_posted': 'September 22, 2019'
-    }
-]
+# posts = [
+#     {
+#         'author': 'Audrey Njiraini',
+#         'title': 'Blog Post 1',
+#         'content': 'First post content',
+#         'date_posted': 'September 21, 2019'
+#     },
+#     {
+#         'author': 'Kendall Njiraini',
+#         'title': 'Blog Post 2',
+#         'content': 'Second post content',
+#         'date_posted': 'September 22, 2019'
+#     }
+# ]
 
 
 
@@ -32,19 +35,56 @@ def home():
     blogs = Blog.query.all()
         
     title = "Welcome to My Blog"
+    
+    name  = "Quote"
+    
+    quote = get_quote()
 
-    return render_template('index.html', blogs = blogs)
+    return render_template('index.html', blogs = blogs[::-1], name = name,quote = quote)
 
 
 @main.route('/user/<uname>')
 @login_required
-def profile():
+def profile(uname):
     user = User.query.filter_by(username = uname).first()
     
     if user is None:
         abort(404)
     
     return render_template('profile/profile.html', user = user)
+
+
+@main.route('/user/<uname>/update',methods = ['GET','POST'])
+@login_required
+def update_profile(uname):
+    user = User.query.filter_by(username = uname).first()
+    
+    if user is None:
+        abort(404)
+    
+    form = UpdateProfile()
+
+    if form.validate_on_submit():
+        user.bio = form.bio.data
+
+        db.session.add(user)
+        db.session.commit()
+
+        return redirect(url_for('.profile',uname = user.username))
+    
+    return render_template('profile/update.html',form =form)
+
+
+@main.route('/user/<uname>/update/pic',methods= ['POST'])
+@login_required
+def update_pic(uname):
+    user = User.query.filter_by(username = uname).first()
+    if 'photo' in request.files:
+        filename = photos.save(request.files['photo'])
+        path = f'photos/{filename}'
+        user.profile_pic_path = path
+        db.session.commit()
+    return redirect(url_for('main.profile',uname=uname))
 
 
 @main.route('/new_blog', methods=['GET','POST'])
@@ -69,16 +109,16 @@ def blog(id):
     form = CommentForm()
 
     if request.args.get("like"):
-        post.like = post.like+1
+        blog.like = blog.like+1
 
-        db.session.add(post)
+        db.session.add(blog)
         db.session.commit()
 
         return redirect("/blog/{blog_id}".format(blog_id = blog.id))
 
     if form.validate_on_submit():
         comment = form.comment.data
-        new_comment = Comment(id=id,comment=comment,user_id=current_user.id,blog_id=blog.id)
+        new_comment = Comment(id = id,comment = comment,user_id = current_user.id,blog_id = blog.id)
 
         new_comment.save_comment()
 
