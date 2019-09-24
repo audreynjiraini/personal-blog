@@ -17,6 +17,7 @@ class User(UserMixin,db.Model):
     email = db.Column(db.String(255), unique = True, nullable = False)
     password_hash = db.Column(db.String(255), nullable = False)
     profile_pic_path = db.Column(db.String())
+    bio = db.Column(db.String(255))
     
     # role_id = db.Column(db.Integer,db.ForeignKey('roles.id'))
     # comments = db.relationship('Comment', backref = 'comments', lazy = 'dynamic')
@@ -56,7 +57,7 @@ class Blog(db.Model):
     title = db.Column(db.String(255))
     body = db.Column(db.String)
     posted = db.Column(db.DateTime,default = datetime.utcnow)
-    category = db.Column(db.String)
+    # category = db.Column(db.String)
     likes = db.Column(db.Integer)
     dislikes = db.Column(db.Integer)
     # user_id = db.Column(db.Integer, db.ForeignKey('users.id'))

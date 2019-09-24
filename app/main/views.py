@@ -125,3 +125,23 @@ def blog(id):
         return redirect("/blog/{blog_id}".format(blog_id = blog.id))
 
     return render_template('blog.html',blog = blog,comments = comment,comment_form = form)
+
+
+# @main.route("/blog/<int:id>/update",methods=['GET','POST'])
+# @login_required
+# def update_blog(id):
+#        blog = Blog.query.get_or_404(id)
+       
+#        form = BlogForm()
+#        if form.validate_on_submit():
+#            blog.title = form.title.data
+#            blog.content = form.body.data
+           
+#            db.session.commit()
+           
+#            flash('Blog updated', 'success')
+#            return redirect(url_for('main.blog', blog_id=blog.id))
+#        elif  request.method == 'GET':
+#            form.title.data = blog.title
+#            form.body.data = blog.body
+#        return render_template('new_blog.html', title='Update Blog', form = form, legend = 'Update Blog')
