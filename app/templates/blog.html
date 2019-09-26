@@ -17,13 +17,28 @@
             <div class="container">
                 <h2>{{blog.title}}</h2>
                 <hr>
-                <h4>Posted on: {{blog.posted}}</h4>
+    
+                <p>{{blog.body}}</p>
+                <br><br>
+                <small>Written by: {{blog.user.username}}</small>
                 <br>
-                <p>{{blog.body}}</p>         
+                <small>Posted on: {{blog.posted}}</small>         
             </div>
 
             <br><br><br>
         </div>
+        {% if current_user.username=='Logan' %}
+        <div class="col-lg-3 mt-5 pt-4"> 
+            <div class="container">
+            
+                <div id="commentheader">
+                    <h3>Update Blog Post</h3>
+                    <hr>
+                </div>
+                <div>
+                    <a href="{{url_for('main.update_blog',id = blog.id)}}" class="btn btn-sm"><button class="btn btn-success btn-sm m-1 mb-1">Update</button></a>
+                </div>
+        {% endif %}
     
         <div class="col-lg-3 mt-5 pt-4"> 
             <div class="container">
@@ -32,16 +47,16 @@
                     <h3>Comments</h3>
                     <hr>
                 </div>
-                
 
                 <div>
                     {% for comment in comments %}
                     <p>{{comment.comment}}</p>
 
-                    {% if current_user.is_authenticated %}
+                    {% if current_user.username=='Logan' %}
                     <div>
-                        <a href="/blog/{{blog.id}}?delete=1">Delete Comment</i></a>
+                        <a href="{{url_for('main.delete_comment',id=comment.id)}}"><button class="btn btn-danger btn-sm m-1 mb-1">Delete Comment</button></a>
                     </div>
+            
                     {% endif %}
                     {% endfor%}
                 </div>

@@ -10,7 +10,7 @@ class BlogModelTest(unittest.TestCase):
         '''
         Set up method that will run before every Test
         '''
-        self.new_blog = Blog(id = 1, post_id = 1, title = 'Python Must Be Crazy', body = 'A thrilling new Python Series', posted = 2019/9/23, likes = 0, dislikes = 0)
+        self.new_blog = Blog(id = 12345, title = 'Python Must Be Crazy', body = 'A thrilling new Python Series', posted = 2019/9/23, likes = 0, dislikes = 0)
 
     def test_instance(self):
         self.assertTrue(isinstance(self.new_blog,Blog))
@@ -21,8 +21,7 @@ class BlogModelTest(unittest.TestCase):
         
         
     def test_check_instance_variables(self):
-        self.assertEquals(self.new_blog.id,1)
-        self.assertEquals(self.new_blog.post_id,1)
+        self.assertEquals(self.new_blog.id,12345)
         self.assertEquals(self.new_blog.title,'Python Must Be Crazy')
         self.assertEquals(self.new_blog.body,'A thrilling new Python Series')
         self.assertEquals(self.new_blog.posted,2019/9/23)
